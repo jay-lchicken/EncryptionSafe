@@ -1,0 +1,106 @@
+<h1 style="font-family: chalkboard">Programmable Super-Secret Passcode Protected Image Safe</h1>
+<a href="https://en.wikipedia.org/wiki/Safe">About Safes</a>
+<p style="font: marker felt"><h4 style="font-family: marker felt">Enter the url of the image to put in the safe and a new passcode. Press Lock to lock the safe.</h4></p>   
+<input type="text" id="url1" placeholder="Input Link" >
+<button onclick="find()" type="button" style="border-radius: 8px; width: 100px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">Find</button>
+<p id="display-passcode" style="font-size: 24px; font-family: marker felt; background-color: #EFEFEF; padding: 10px; border-radius: 5px;"></p>
+<button onclick="buttonPressed(1)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">1</button>
+<button onclick="buttonPressed(2)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">2</button>
+<button onclick="buttonPressed(3)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">3</button>
+<br>
+<p></p>
+<button onclick="buttonPressed(4)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">4</button>
+<button onclick="buttonPressed(5)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">5</button>
+<button onclick="buttonPressed(6)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">6</button>
+<br>
+<p></p>
+<button onclick="buttonPressed(7)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">7</button>
+<button onclick="buttonPressed(8)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">8</button>
+<button onclick="buttonPressed(9)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">9</button>
+<br>
+<p></p>
+<button onclick="buttonPressed(0)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">0</button>
+<button onclick="clearPasscode()" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">C</button>
+<button onclick="lockSafe()" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">🔑</button>
+<img id="image" src="" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
+<script>
+    let passcode = "";
+    let confirmedPasscode = "";
+    let encryptedCode = ""
+    let encryptedCode2 = ""
+    let url = ""
+    let bool = false
+    let tries = 3
+    function find(){
+        let url = document.getElementById("url1").value;
+        let imgElement = document.getElementById("image");
+        imgElement.src = url;
+        imgElement.style.display = 'block';
+        
+    }
+    function buttonPressed(number) {
+        passcode += number;
+        document.getElementById("display-passcode").innerText = passcode;
+    }
+
+    function clearPasscode() {
+        passcode = "";
+        document.getElementById("display-passcode").innerText = passcode;
+    }
+
+    function lockSafe() {
+        if (!bool){
+            if (passcode.length<4){
+            alert(passcode + " is not greater than 4 numbers");
+            }else{
+            
+            let imgElement = document.getElementById("image");
+            imgElement.src = "";
+            imgElement.style.display = 'block';
+            let inputElement = document.getElementById("display-passcode");
+            inputElement.innerText = "";
+            confirmedPasscode = passcode
+            passcode = ""
+            let urlab = document.getElementById("url1");
+            encryptedCode = CryptoJS.AES.encrypt(urlab.value, confirmedPasscode).toString();
+            urlab.value = "";  
+            confirmedPasscode  = ""
+            alert("Safe locked with passcode: " + encryptedCode + " " + encryptedCode2);
+            bool = true
+            }
+        }else{
+            try {
+                let decryptedCode = CryptoJS.AES.decrypt(encryptedCode, passcode).toString(CryptoJS.enc.Utf8);
+                if (decryptedCode) {
+                    let imgElement = document.getElementById("image");
+                    imgElement.src = decryptedCode;
+                    imgElement.style.display = 'block';
+                    alert("Safe unlocked! URL: " + decryptedCode);
+                    bool = false;
+                    passcode = "";
+                } else {
+                    alert("Invalid passcode!");
+                    tries -=1;
+                }
+            } catch (e) {
+                alert("Invalid passcode!");
+                tries -=1;
+            }
+            if (tries == 0){
+                passcode = "";
+                confirmedPasscode = "";
+                encryptedCode = ""
+                encryptedCode2 = ""
+                url = ""
+                bool = false
+                alert("Everything has been locked and self-destructed. The program is now resetted")
+        
+            }
+        }
+        
+        
+    }   
+    
+</script>

@@ -73,6 +73,7 @@
             let urlab = document.getElementById("url1");
             encryptedCode = CryptoJS.AES.encrypt(urlab.value, confirmedPasscode).toString();
             urlab.value = "";  
+            urlab.style.display = "none"
             confirmedPasscode  = ""
             bool = true
             alert("Locked!")
@@ -87,13 +88,19 @@
                     bool = false;
                     passcode = "";
                     alert("Unlocked!")
+                    let urlab = document.getElementById("url1");
+                    urlab.style.display = "block"
+                    urlab.style = "text-align: center"
+
                 } else {
                     alert("Invalid passcode!");
                     tries -=1;
+                    passcode = "";
                 }
             } catch (e) {
                 alert("Invalid passcode!");
                 tries -=1;
+                passcode = "";
             }
             if (tries == 0){
                 passcode = "";
@@ -103,7 +110,9 @@
                 url = ""
                 bool = false
                 alert("Everything has been locked and self-destructed. The program is now reset.")
-        
+                let urlab = document.getElementById("url1");
+                urlab.style.display = "block"
+                urlab.style = "text-align: center"
             }
         }
         

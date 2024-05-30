@@ -67,7 +67,6 @@
             encryptedCode = CryptoJS.AES.encrypt(urlab.value, confirmedPasscode).toString();
             urlab.value = "";  
             confirmedPasscode  = ""
-            alert("Safe locked with passcode: " + encryptedCode + " " + encryptedCode2);
             bool = true
             }
         }else{

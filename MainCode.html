@@ -1,8 +1,8 @@
+
 <h1 style="font-family: chalkboard">Programmable Super-Secret Passcode Protected Image Safe</h1>
 <a href="https://en.wikipedia.org/wiki/Safe">About Safes</a>
 <p style="font: marker felt"><h4 style="font-family: marker felt">Enter the url of the image to put in the safe and a new passcode. Press Lock to lock the safe.</h4></p>   
-<input type="text" id="url1" placeholder="Input Link" >
-<button onclick="find()" type="button" style="border-radius: 8px; width: 100px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">Find</button>
+<input type="text" id="url1" placeholder="Input Link" oninput="find()" >
 <p id="display-passcode" style="font-size: 24px; font-family: marker felt; background-color: #EFEFEF; padding: 10px; border-radius: 5px;"></p>
 <button onclick="buttonPressed(1)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">1</button>
 <button onclick="buttonPressed(2)" type="button" style="border-radius: 8px; width: 60px; background-color: #AFBC88; border-color: #AFBC88; height: 60px; font-size: 40px">2</button>
@@ -68,6 +68,7 @@
             urlab.value = "";  
             confirmedPasscode  = ""
             bool = true
+            alert("Locked!")
             }
         }else{
             try {
@@ -76,9 +77,9 @@
                     let imgElement = document.getElementById("image");
                     imgElement.src = decryptedCode;
                     imgElement.style.display = 'block';
-                    alert("Safe unlocked! URL: " + decryptedCode);
                     bool = false;
                     passcode = "";
+                    alert("Unlocked!")
                 } else {
                     alert("Invalid passcode!");
                     tries -=1;
